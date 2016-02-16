@@ -6,17 +6,28 @@ Support wildcard match.
 
 ### Download dumpclass.jar
 
+Can download dumpclass.jar from releases page.
+
+https://github.com/hengyunabc/dumpclass/releases
+
+```bash
+wget https://github.com/hengyunabc/dumpclass/releases/download/0.0.1/dumpclass.jar
+```
+
+### Usage
 
 ```
-Usage:
- java -cp "./dumpclass.jar:$JAVA_HOME/lib/sa-jdi.jar" io.github.hengyunabc.dumpclass.DumpMain <pid> <pattern> [outputDir]
+java -cp "./dumpclass.jar:$JAVA_HOME/lib/sa-jdi.jar" io.github.hengyunabc.dumpclass.DumpMain <pid> <pattern> [outputDir]
 
 pattern: support ? * wildcard match.
 outputDir: default outputDir is current directory.
+```
 
-Example:
- java -cp "./dumpclass.jar:$JAVA_HOME/lib/sa-jdi.jar" io.github.hengyunabc.dumpclass.DumpMain 4345 *StringUtils
- java -cp "./dumpclass.jar:$JAVA_HOME/lib/sa-jdi.jar" io.github.hengyunabc.dumpclass.DumpMain 4345 *StringUtils /tmp
+### Example
+
+```bash
+java -cp "./dumpclass.jar:$JAVA_HOME/lib/sa-jdi.jar" io.github.hengyunabc.dumpclass.DumpMain 4345 *StringUtils
+java -cp "./dumpclass.jar:$JAVA_HOME/lib/sa-jdi.jar" io.github.hengyunabc.dumpclass.DumpMain 4345 *StringUtils /tmp
 ```
  
 ### complie dumpclass.jar
