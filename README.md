@@ -11,7 +11,7 @@ Can download dumpclass.jar from releases page.
 https://github.com/hengyunabc/dumpclass/releases
 
 ```bash
-wget https://github.com/hengyunabc/dumpclass/releases/download/0.0.1/dumpclass.jar
+wget https://github.com/hengyunabc/dumpclass/releases/download/v0.0.2/dumpclass.jar
 ```
 
 ### Usage
