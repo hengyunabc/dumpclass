@@ -17,21 +17,22 @@ wget https://github.com/hengyunabc/dumpclass/releases/download/0.0.1/dumpclass.j
 ### Usage
 
 ```
-java -cp "./dumpclass.jar:$JAVA_HOME/lib/sa-jdi.jar" io.github.hengyunabc.dumpclass.DumpMain <pid> <pattern> [outputDir]
+Usage:
+ java -jar dumpclass.jar <pid> <pattern> [outputDir]
 
 pattern: support ? * wildcard match.
 outputDir: default outputDir is current directory.
+
+Example:
+ java -jar dumpclass.jar 4345 *StringUtils
+ java -jar dumpclass.jar 4345 *StringUtils /tmp
+
+Use the specified sa-jdi.jar:
+ java -cp "./dumpclass.jar:$JAVA_HOME/lib/sa-jdi.jar" io.github.hengyunabc.dumpclass.DumpMain <pid> <pattern> [outputDir]
 ```
 
-### Example
-
-```bash
-java -cp "./dumpclass.jar:$JAVA_HOME/lib/sa-jdi.jar" io.github.hengyunabc.dumpclass.DumpMain 4345 *StringUtils
-java -cp "./dumpclass.jar:$JAVA_HOME/lib/sa-jdi.jar" io.github.hengyunabc.dumpclass.DumpMain 4345 *StringUtils /tmp
-```
- 
 ### complie dumpclass.jar
- 
+
 ```bash
 mvn clean package
 ls -alh target
