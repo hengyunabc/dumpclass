@@ -1,5 +1,10 @@
 package io.github.hengyunabc.dumpclass;
 
+/**
+ * 
+ * @author hengyunabc
+ *
+ */
 public class DumpWrapperFilterConfig {
 	static boolean classLoaderPrefix;
 

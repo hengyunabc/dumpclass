@@ -2,11 +2,9 @@ package io.github.hengyunabc.dumpclass;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 
 import sun.jvm.hotspot.oops.InstanceKlass;
 import sun.jvm.hotspot.oops.Oop;
@@ -54,27 +52,25 @@ public class DumpWrapperFilter implements ClassFilter {
 
 		if (DumpWrapperFilterConfig.classLoaderPrefix) {
 			outDest = new File(DumpWrapperFilterConfig.outputDirectory, getClassLoaderDirName(kls.getClassLoader()));
-			// write ClassLoader into to classLoader.txt file
+			// write ClassLoader.toString() into to classLoader.txt file
 			if (kls.getClassLoader() != null) {
 				outDest.mkdirs();
 				File classLoaderInfo = new File(outDest, "classLoader.txt");
-				FileOutputStream out = null;
-				try {
-					out = new FileOutputStream(classLoaderInfo);
-					out.write(kls.getClassLoader().toString().getBytes("UTF-8"));
-					out.flush();
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				} finally {
-					if (out != null) {
-						try {
-							out.close();
-						} catch (IOException e) {
-							e.printStackTrace();
+				if (!classLoaderInfo.exists()) {
+					FileOutputStream out = null;
+					try {
+						out = new FileOutputStream(classLoaderInfo);
+						out.write(kls.getClassLoader().toString().getBytes("UTF-8"));
+						out.flush();
+					} catch (IOException e) {
+						e.printStackTrace();
+					} finally {
+						if (out != null) {
+							try {
+								out.close();
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
 						}
 					}
 				}
