@@ -37,3 +37,7 @@ Use the specified sa-jdi.jar:
 mvn clean package
 ls -alh target
 ```
+
+##License
+
+Apache License V2
