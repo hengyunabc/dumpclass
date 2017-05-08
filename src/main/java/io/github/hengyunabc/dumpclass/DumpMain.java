@@ -47,7 +47,7 @@ public class DumpMain {
 			throws MalformedURLException, SecurityException, NoSuchMethodException, ClassNotFoundException,
 			IllegalArgumentException, IllegalAccessException, InvocationTargetException, InterruptedException {
 
-		// check if need to reluanch
+		// when sa-jdi not exist in classpath, create a new classloader with sa-jdi in java_home
 		checkRelaunch(args);
 
 		ClassLoader classLoader = DumpMain.class.getClassLoader();
@@ -129,9 +129,11 @@ public class DumpMain {
 			// build a new classloader, a trick.
 			List<URL> urls = new ArrayList<URL>();
 			for (URL url : ((URLClassLoader) DumpMain.class.getClassLoader()).getURLs()) {
+				//add urls in original classloader to the new one
 				urls.add(url);
 			}
 
+			//add sa-jdi to the new classloader
 			urls.add(file.toURI().toURL());
 
 			URLClassLoader classLoader = new URLClassLoader(urls.toArray(new URL[0]),
@@ -143,6 +145,7 @@ public class DumpMain {
 				mainMethod.setAccessible(true);
 			}
 
+			//code is in fact running here
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
@@ -159,6 +162,7 @@ public class DumpMain {
 
 			}).start();
 
+			//sleep util user quit, prevent main method running
 			Thread.currentThread().sleep(Long.MAX_VALUE);
 		}
 	}
