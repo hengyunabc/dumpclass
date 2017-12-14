@@ -12,6 +12,10 @@ You can download dumpclass.jar from maven center.
 
 http://search.maven.org/#search%7Cga%7C1%7Cdumpclass
 
+```bash
+wget http://search.maven.org/remotecontent?filepath=io/github/hengyunabc/dumpclass/0.0.1/dumpclass-0.0.1.jar -O dumpclass.jar
+```
+
 ### Usage
 
 ```
@@ -100,6 +104,6 @@ mvn clean package
 ls -alh target
 ```
 
-##License
+## License
 
 Apache License V2
