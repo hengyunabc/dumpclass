@@ -100,6 +100,9 @@ public class DumpWrapperFilter implements ClassFilter {
 			try {
 				ClassWriter cw = new ClassWriter(kls, os);
 				cw.write();
+			} catch (InternalError e) {
+				System.out.println(klassName + " write error");
+				e.printStackTrace();
 			} finally {
 				if (os != null) {
 					os.close();
