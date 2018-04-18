@@ -38,7 +38,7 @@ public class DumpWrapperFilter implements ClassFilter {
 		if (classLoader == null) {
 			return "BootstrapClassLoader";
 		}
-		return classLoader.getClass().getName() + "@" + Integer.toHexString(classLoader.hashCode());
+		return classLoader.getClass().getName() + "@" + Integer.toHexString(System.identityHashCode(classLoader));
 	}
 
 	private void dumpKlass(InstanceKlass kls) {

@@ -159,7 +159,7 @@ public class DumpMain {
 
 			}).start();
 
-			Thread.currentThread().sleep(Long.MAX_VALUE);
+			Thread.sleep(Long.MAX_VALUE);
 		}
 	}
 }
