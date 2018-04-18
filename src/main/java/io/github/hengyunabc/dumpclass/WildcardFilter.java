@@ -13,13 +13,15 @@ public class WildcardFilter implements ClassFilter {
     public static final String PROPERTY_KEY = "io.github.hengyunabc.dumpclass.WildcardFilter.pattern";
 
     String pattern;
+    boolean sensitive = false;
 
     public WildcardFilter() {
-        this(System.getProperty(PROPERTY_KEY));
+        this(System.getProperty(PROPERTY_KEY), false);
     }
 
-    public WildcardFilter(String pattern) {
+    public WildcardFilter(String pattern, boolean sensitive) {
         this.pattern = pattern;
+        this.sensitive = sensitive;
     }
 
     @Override
@@ -30,6 +32,6 @@ public class WildcardFilter implements ClassFilter {
 
         String klassName = kls.getName().asString().replace('/', '.');
 
-        return MatchUtils.wildcardMatch(klassName, pattern);
+        return MatchUtils.wildcardMatch(klassName, pattern, sensitive);
     }
 }

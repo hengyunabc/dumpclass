@@ -22,7 +22,7 @@ public class DumpWrapperFilter implements ClassFilter {
 	ClassFilter classFilter;
 
 	public DumpWrapperFilter() {
-		classFilter = new WildcardFilter(DumpWrapperFilterConfig.pattern);
+		classFilter = new WildcardFilter(DumpWrapperFilterConfig.pattern, DumpWrapperFilterConfig.sensitive);
 	}
 
 	@Override
@@ -42,10 +42,10 @@ public class DumpWrapperFilter implements ClassFilter {
 	}
 
 	private void dumpKlass(InstanceKlass kls) {
-
-		DumpWrapperFilterConfig.dumpedCounter++;
+		DumpWrapperFilterConfig.beforeDump(kls);
 
 		String klassName = kls.getName().asString();
+
 		klassName = klassName.replace('/', File.separatorChar);
 
 		File outDest = new File(DumpWrapperFilterConfig.outputDirectory);
@@ -94,6 +94,7 @@ public class DumpWrapperFilter implements ClassFilter {
 			f.createNewFile();
 			os = new BufferedOutputStream(new FileOutputStream(f));
 			try {
+				DumpWrapperFilterConfig.beforeWrite(f, kls);
 				ClassWriter cw = new ClassWriter(kls, os);
 				cw.write();
 			} finally {
