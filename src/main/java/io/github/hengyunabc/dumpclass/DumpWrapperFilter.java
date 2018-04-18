@@ -2,11 +2,9 @@ package io.github.hengyunabc.dumpclass;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 
 import sun.jvm.hotspot.oops.InstanceKlass;
 import sun.jvm.hotspot.oops.Oop;
@@ -24,7 +22,7 @@ public class DumpWrapperFilter implements ClassFilter {
 	ClassFilter classFilter;
 
 	public DumpWrapperFilter() {
-		classFilter = new WildcardFilter(DumpWrapperFilterConfig.pattern);
+		classFilter = new WildcardFilter(DumpWrapperFilterConfig.pattern, DumpWrapperFilterConfig.sensitive);
 	}
 
 	@Override
@@ -40,41 +38,39 @@ public class DumpWrapperFilter implements ClassFilter {
 		if (classLoader == null) {
 			return "BootstrapClassLoader";
 		}
-		return classLoader.getClass().getName() + "@" + Integer.toHexString(classLoader.hashCode());
+		return classLoader.getClass().getName() + "@" + Integer.toHexString(System.identityHashCode(classLoader));
 	}
 
 	private void dumpKlass(InstanceKlass kls) {
-
-		DumpWrapperFilterConfig.dumpedCounter++;
+		DumpWrapperFilterConfig.beforeDump(kls);
 
 		String klassName = kls.getName().asString();
+
 		klassName = klassName.replace('/', File.separatorChar);
 
 		File outDest = new File(DumpWrapperFilterConfig.outputDirectory);
 
 		if (DumpWrapperFilterConfig.classLoaderPrefix) {
 			outDest = new File(DumpWrapperFilterConfig.outputDirectory, getClassLoaderDirName(kls.getClassLoader()));
-			// write ClassLoader into to classLoader.txt file
+			// write ClassLoader.toString() into to classLoader.txt file
 			if (kls.getClassLoader() != null) {
 				outDest.mkdirs();
 				File classLoaderInfo = new File(outDest, "classLoader.txt");
-				FileOutputStream out = null;
-				try {
-					out = new FileOutputStream(classLoaderInfo);
-					out.write(kls.getClassLoader().toString().getBytes("UTF-8"));
-					out.flush();
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				} finally {
-					if (out != null) {
-						try {
-							out.close();
-						} catch (IOException e) {
-							e.printStackTrace();
+				if (!classLoaderInfo.exists()) {
+					FileOutputStream out = null;
+					try {
+						out = new FileOutputStream(classLoaderInfo);
+						out.write(kls.getClassLoader().toString().getBytes("UTF-8"));
+						out.flush();
+					} catch (IOException e) {
+						e.printStackTrace();
+					} finally {
+						if (out != null) {
+							try {
+								out.close();
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
 						}
 					}
 				}
@@ -98,6 +94,7 @@ public class DumpWrapperFilter implements ClassFilter {
 			f.createNewFile();
 			os = new BufferedOutputStream(new FileOutputStream(f));
 			try {
+				DumpWrapperFilterConfig.beforeWrite(f, kls);
 				ClassWriter cw = new ClassWriter(kls, os);
 				cw.write();
 			} finally {

@@ -20,24 +20,26 @@ wget http://search.maven.org/remotecontent?filepath=io/github/hengyunabc/dumpcla
 
 ```
 Usage:
- java -jar dumpclass.jar <pid> <pattern> [outputDir] <--classLoaderPrefix>
-
-pattern: support ? * wildcard match.
-outputDir: default outputDir is current directory.
---classLoaderPrefix: every classloader has it's own output directory. When multi classloaders load same name classes, try this.
+ pattern                  : class name wildcard match pattern
+ --noStat                 : do not print dump stat (default: false)
+ --sensitive              : class name wildcard match sensitive. In mac os, try
+                            this option. (default: false)
+ -c (--classLoaderPrefix) : classLoaderPrefix (default: false)
+ -o (--outputDir) VAL     : outputDir
+ -p (--pid) N             : pid
 
 Example:
- java -jar dumpclass.jar 4345 *StringUtils
- java -jar dumpclass.jar 4345 *StringUtils /tmp
- java -jar dumpclass.jar 4345 *StringUtils /tmp --classLoaderPrefix
-
+  java -jar dumpclass.jar -p 4345 *StringUtils
+  java -jar dumpclass.jar -p 4345 -o /tmp/dump *StringUtils
+  java -jar dumpclass.jar -p 4345 -o /tmp/dump --classLoaderPrefix  *StringUtils
 Use the specified sa-jdi.jar:
- java -cp "./dumpclass.jar:$JAVA_HOME/lib/sa-jdi.jar" io.github.hengyunabc.dumpclass.DumpMain <pid> <pattern> [outputDir]
+  java -cp './dumpclass.jar:$JAVA_HOME/lib/sa-jdi.jar' io.github.hengyunabc.dumpclass.DumpMain 4345 *StringUtils
 ```
 
 ### Trouble
 
 * Try to use sudo
+
 ```
 Error attaching to process: sun.jvm.hotspot.debugger.DebuggerException: Can't attach to the process. Could be caused by an incorrect pid or lack of privileges.
 sun.jvm.hotspot.debugger.DebuggerException: sun.jvm.hotspot.debugger.DebuggerException: Can't attach to the process. Could be caused by an incorrect pid or lack of privileges.
@@ -54,8 +56,16 @@ sun.jvm.hotspot.debugger.DebuggerException: sun.jvm.hotspot.debugger.DebuggerExc
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:497)
-	at io.github.hengyunabc.dumpclass.DumpMain.main(DumpMain.java:101)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at io.github.hengyunabc.dumpclass.DumpMain.run(DumpMain.java:132)
+	at io.github.hengyunabc.dumpclass.DumpMain.doMain(DumpMain.java:68)
+	at io.github.hengyunabc.dumpclass.DumpMain.main(DumpMain.java:61)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at io.github.hengyunabc.dumpclass.DumpMain$2.run(DumpMain.java:184)
+	at java.lang.Thread.run(Thread.java:745)
 Caused by: sun.jvm.hotspot.debugger.DebuggerException: Can't attach to the process. Could be caused by an incorrect pid or lack of privileges.
 	at sun.jvm.hotspot.debugger.bsd.BsdDebuggerLocal.attach0(Native Method)
 	at sun.jvm.hotspot.debugger.bsd.BsdDebuggerLocal.access$100(BsdDebuggerLocal.java:65)

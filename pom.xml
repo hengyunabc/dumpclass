@@ -36,7 +36,7 @@
 
 	<groupId>io.github.hengyunabc</groupId>
 	<artifactId>dumpclass</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.3-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<properties>
@@ -48,7 +48,11 @@
 	</properties>
 
 	<dependencies>
-
+		<dependency>
+			<groupId>args4j</groupId>
+			<artifactId>args4j</artifactId>
+			<version>2.33</version>
+		</dependency>
 		<dependency>
 			<groupId>sun.jvm.hotspot</groupId>
 			<artifactId>sa-jdi</artifactId>
@@ -98,14 +102,19 @@
 		<finalName>dumpclass</finalName>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>1.5.9.RELEASE</version>
+				                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
 				<configuration>
-					<archive>
-						<manifest>
-							<mainClass>io.github.hengyunabc.dumpclass.DumpMain</mainClass>
-						</manifest>
-					</archive>
+					<mainClass>io.github.hengyunabc.dumpclass.DumpMain</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>
